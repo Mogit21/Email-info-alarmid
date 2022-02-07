@@ -21,17 +21,23 @@ connection = sqlite3.connect("info-alarmid-db.db")
 print ("Database opened successfully!")
 cursor = connection.cursor()
 
-cursor.execute("CREATE TABLE id (id integer primary key, name text, ipaddress text, office text)")
+cursor.execute("CREATE TABLE IF NOT EXISTS id (id integer primary key, name text, ipaddress text, office text)")
 print ("Table id created successfully!")
 cursor.executemany("INSERT INTO id VALUES (?,?,?,?)", idlist)
 #connection.executemany("insert into id values (?,?,?,?)", idlist)    shortcut?
 print ("Records created successfully in table id")
 
-cursor.execute("CREATE TABLE region (office text primary key, region text, owner text)")
+cursor.execute("CREATE TABLE IF NOT EXISTS region (office text primary key, region text, owner text)")
 print ("Table region created successfully!")
 cursor.executemany("INSERT INTO region VALUES (?,?,?)", regionlist)
-#connection.executemany("INSERT INTI REGION (?,?,?)", regionlist)    shortcut?
-print ("Records created successfully in table region")
 
+print ("Records created successfully in table region")
+cursor.execute ("SELECT * FROM region")
+print (cursor.fetchall())
+
+connection.commit()
 
 connection.close()
+
+
+
